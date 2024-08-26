@@ -24,22 +24,8 @@ async function login(req, res) {
         if(response.data === '用戶名或密碼錯誤'){
             return res.status(401).send('用戶名或密碼錯誤')
         }
-        console.log(token)
-        // 設置 HTTP-only Cookie
-        res.cookie('token', token, {
-            httpOnly: true,
-            // secure: false, 
-            // sameSite: 'None',
-            maxAge: 10000,//效期
-        })
-        jwt.verify(token, publicKey, { algorithms: ['RS512'] }, (err, decoded) => {
-            if (err) {
-                return res.status(401).send('Token 驗證失敗')
-            } else {
-                console.log('驗證通過，解碼後的數據:', decoded)
-                res.status(200).send('登入成功')
-            }
-        })
+        // console.log(token)
+        res.status(200).send(token)
         
     } catch (err) {
         console.log(`err during login: ${err}`)

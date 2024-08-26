@@ -14,10 +14,10 @@ const __dirname = path.dirname(__filename)
 const app = express()
 
 // HTTPS 設置
-const httpsOptions = {
-    key: fs.readFileSync('./key/SSL_key/privatekey.pem'),
-    cert: fs.readFileSync('./key/SSL_key/certificate.pem')
-}
+// const httpsOptions = {
+//     key: fs.readFileSync('./key/SSL_key/privatekey.pem'),
+//     cert: fs.readFileSync('./key/SSL_key/certificate.pem')
+// }
 
 // 設置靜態文件目錄
 app.use(express.static(path.join(__dirname, 'frontend')))
@@ -30,15 +30,15 @@ app.use(cookieParser())
 // 根路由
 app.use('/',router)
 
-const httpServer = http.createServer(app);
-httpServer.listen(3000, () => {
-  console.log('HTTP server listening on port 3000, redirecting to HTTPS');
-})
-
-https.createServer(httpsOptions, app).listen(443, ()=>{
-    console.log('HTTPS server running on port 443')
-})
-
-// app.listen(3000,()=>{
-//   console.log('HTTP server listening on port 3000')
+// const httpServer = http.createServer(app);
+// httpServer.listen(3000, () => {
+//   console.log('HTTP server listening on port 3000, redirecting to HTTPS');
 // })
+
+// https.createServer(httpsOptions, app).listen(443, ()=>{
+//     console.log('HTTPS server running on port 443')
+// })
+
+app.listen(3000,()=>{
+  console.log('HTTP server listening on port 3000')
+})
