@@ -16,19 +16,53 @@
         <a href="/trade" id="trade">模擬交易</a>
         <a href="/memberPage" id="login">會員管理</a>
     </div>
-        <div class="container">
-            <div class="row justify-content-center mt-3">
-                <div class="col-md-6">
-                    <!-- 登入後介面 -->
-                    <div class="card bg-dark" id="logout-card">
-                        <div class="card-body text-white">
-                            <h2 class="card-title text-center mb-4" >模擬交易開發中</h2>
-                            <h3 class="card-title text-center mb-4" >敬請期待</h3>
-                        </div>
-                    </div>
+    <div class="container mt-5">
+        <h2 class="mb-4">加密貨幣輸入</h2>
+        <form>
+            <!-- 文本輸入 -->
+            <div class="mb-3">
+                <label for="cryptoInput" class="form-label">加密貨幣名稱</label>
+                <input type="text" class="form-control" id="cryptoInput" placeholder="例如：Bitcoin">
+            </div>
+
+            <!-- 下拉選單 -->
+            <div class="mb-3">
+                <label for="cryptoSelect" class="form-label">選擇加密貨幣</label>
+                <select class="form-select" id="cryptoSelect">
+                    <option selected>請選擇...</option>
+                    <option value="BTC">Bitcoin (BTC)</option>
+                    <option value="ETH">Ethereum (ETH)</option>
+                    <option value="USDT">Tether (USDT)</option>
+                    <option value="BNB">Binance Coin (BNB)</option>
+                </select>
+            </div>
+
+            <!-- 單選按鈕 -->
+            <div class="mb-3">
+                <label class="form-label">選擇交易類型</label>
+                <div class="form-check">
+                    <input class="form-check-input" type="radio" name="tradeType" id="buyRadio" value="buy" checked>
+                    <label class="form-check-label" for="buyRadio">
+                        買入
+                    </label>
+                </div>
+                <div class="form-check">
+                    <input class="form-check-input" type="radio" name="tradeType" id="sellRadio" value="sell">
+                    <label class="form-check-label" for="sellRadio">
+                        賣出
+                    </label>
                 </div>
             </div>
-        </div>
+
+            <!-- 數量輸入 -->
+            <div class="mb-3">
+                <label for="amountInput" class="form-label">數量</label>
+                <input type="number" class="form-control" id="amountInput" step="0.0001" min="0">
+            </div>
+
+            <button type="submit" class="btn btn-primary">提交</button>
+        </form>
+    </div>
     </div>
     <script type="module" src="../js/logout.js"></script>
     <script type="module" src="../js/tokenVerify.js"></script>

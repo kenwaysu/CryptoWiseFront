@@ -50,17 +50,13 @@ document.getElementById('user-login').addEventListener('click', async ()=>{
         })
         // 登入成功
         document.cookie = `token=${response.data}; max-age=3600; path=/`
-
         alert('登入成功')
         // 畫面跳轉
         window.location.href = '/memberPage'
-        // document.getElementById('login-card').classList.add('d-none')
-        // document.getElementById('register-card').classList.add('d-none')
-        // document.getElementById('logout-card').classList.remove('d-none')
 
     } catch (err) {
         // 登入失敗
-        const errorMessage = err.response
+        const errorMessage = err.response.data
         alert(errorMessage)
     }
 })
