@@ -49,10 +49,9 @@ document.getElementById('user-login').addEventListener('click', async ()=>{
             password
         })
         // 登入成功
-        const loginSuccess = response.data
-        console.log(loginSuccess)
+        document.cookie = `token=${response.data}; max-age=3600; path=/`
 
-        // alert(loginSuccess)
+        alert('登入成功')
         // 畫面跳轉
         window.location.href = '/memberPage'
         // document.getElementById('login-card').classList.add('d-none')
@@ -61,7 +60,7 @@ document.getElementById('user-login').addEventListener('click', async ()=>{
 
     } catch (err) {
         // 登入失敗
-        const errorMessage = err.response.data
+        const errorMessage = err.response
         alert(errorMessage)
     }
 })

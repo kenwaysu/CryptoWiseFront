@@ -17,6 +17,7 @@ async function homePage(req,res){
 
 async function memberPage(req,res){
     const token = req.cookies.token || req.headers['authorization']
+    // console.log(token)
     const loginPath = path.join(__dirname,'../frontend/html/login.html')
     const logoutPath = path.join(__dirname,'../frontend/html/logout.html')
     jwt.verify(token, publicKey, { algorithms: ['RS512'] }, (err) => {

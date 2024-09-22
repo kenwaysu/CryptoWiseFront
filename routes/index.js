@@ -1,6 +1,5 @@
 import login from './login.js'
 import logout from './logout.js'
-import {tokenVerify} from '../controllers/tokenVerify.js'
 import homePage from '../controllers/homePage.js'
 import express from 'express'
 
@@ -10,9 +9,9 @@ router.get('/', homePage.homePage)
 
 router.get('/memberPage', homePage.memberPage)
 
-router.get('/coinList',tokenVerify, homePage.listPage)
+router.get('/coinList', homePage.listPage)
 
-router.get('/trade', tokenVerify, homePage.tradePage)
+router.get('/trade', homePage.tradePage)
 
 router.use('/login', login)
 
