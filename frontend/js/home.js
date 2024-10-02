@@ -35,6 +35,8 @@ document.getElementById('MAsearch').addEventListener('click',()=>{
             const button = document.createElement('button');
             button.className = 'btn btn-outline-primary';
             button.textContent = '+';
+            button.id = `${pair}`
+            button.addEventListener('click', addCoin)
             trackCell.appendChild(button);
 
             const pairCell = document.createElement('div');
@@ -60,3 +62,17 @@ document.getElementById('MAsearch').addEventListener('click',()=>{
 document.getElementById('login').addEventListener('click',()=>{
     axios.get('/login')
 })
+
+async function addCoin(event){
+    const pair = event.currentTarget.id
+    try {
+        const response = await axios.post('http://localhost:3001/userCoin', { pair }, {
+            withCredentials: true
+        })
+        alert(response.data)
+    } catch (error) {
+        alert(error.response.data)
+        window.location.href = '/memberPage'
+    }
+    console.log(`Button ${buttonId} was clicked!`,typeof buttonId)
+}
