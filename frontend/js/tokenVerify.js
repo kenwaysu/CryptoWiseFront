@@ -12,18 +12,18 @@ async function handleNavigation(event, targetUrl) {
     }
 }
 
-document.getElementById('coinList').addEventListener('click', (event) => {
-    handleNavigation(event, '/coinList')
-})
+const navigationItems = [
+    { id: 'coinList', url: '/coinList' },
+    { id: 'trade', url: '/trade' },
+    { id: 'coinListBtn', url: '/coinList' },
+    { id: 'tradeBtn', url: '/trade' },
+]
 
-document.getElementById('trade').addEventListener('click', (event) => {
-    handleNavigation(event, '/trade')
-})
-
-document.getElementById('coinListBtn').addEventListener('click', (event) => {
-    handleNavigation(event, '/trade')
-})
-
-document.getElementById('tradeBtn').addEventListener('click', (event) => {
-    handleNavigation(event, '/trade')
+navigationItems.forEach(item => {
+    const element = document.getElementById(item.id)
+    if (element) {
+        element.addEventListener('click', (event) => handleNavigation(event, item.url))
+    } else {
+        console.warn(`Element with id "${item.id}" not found`)
+    }
 })
