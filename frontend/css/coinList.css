@@ -1,0 +1,15 @@
+.text-bright-green {
+    color: #28ff28 !important; /* 更亮的綠色 */
+}
+
+.text-bright-red {
+    color: #ff0000 !important; /* 自定義的紅色 */
+}
+.btn-close {
+    background-color: rgba(211, 211, 211, 0.466);
+    opacity: 1;
+}
+
+.btn-close:hover {
+    background-color: rgb(68, 68, 68);
+}
