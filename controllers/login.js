@@ -13,9 +13,8 @@ const publicKey = fs.readFileSync('./key/login_key/public.key', 'utf8')
 
 async function login(req, res) {
     const { username, password } = req.body
-    
     try {
-        const response = await axios.post('http://localhost:3001/authController',{
+        const response = await axios.post('http://34.81.200.131:3000/api/authController',{
             username,
             password
         })
