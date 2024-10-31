@@ -4,12 +4,16 @@ let tradingPairInput
 let cryptoList
 let ws
 let cryptoPairs = new Set() // 用來追蹤表格中的交易對
+const token = document.cookie
+    .split('; ')
+    .find(row => row.startsWith('token='))
+    ?.split('=')[1] || ''
 
 function init() {
     addButton = document.getElementById('addPair')
     tradingPairInput = document.getElementById('tradingPair')
     cryptoList = document.getElementById('cryptoList')
-    ws = new WebSocket('ws://localhost:3001')
+    ws = new WebSocket(`ws://34.81.200.131:3000/?token=${token}`)
 
     document.addEventListener('DOMContentLoaded', () => {
         addButton.addEventListener('click', addCryptoPair)
@@ -44,8 +48,12 @@ function handleWebSocketMessage(event) {
 async function addCryptoPair() {
     const pair = tradingPairInput.value.trim()
     try {
-        const response = await axios.post('http://localhost:3001/userCoin', { pair }, {
-            withCredentials: true
+        const response = await axios.post('http://34.81.200.131:3000/api/userCoin', { pair }, {
+            withCredentials: true,
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token}`
+            }
         })
         alert(response.data)
     } catch (error) {
@@ -103,8 +111,12 @@ function updateRow(coin, price, price_change, change_rate, trading_volume, volum
 
 async function removeUserCoin(coin){
     try {
-        const response = await axios.post('http://localhost:3001/removeUserCoin', { coin }, {
-            withCredentials: true
+        const response = await axios.post('http://34.81.200.131:3000/api/removeUserCoin', { coin }, {
+            withCredentials: true,
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token}`
+            }
         })
         alert(response.data)
     } catch (error) {

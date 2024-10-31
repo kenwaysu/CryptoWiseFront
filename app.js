@@ -39,6 +39,6 @@ app.use('/',router)
 //     console.log('HTTPS server running on port 443')
 // })
 
-app.listen(3000,()=>{
+app.listen(3001,'0.0.0.0', ()=>{
   console.log('HTTP server listening on port 3000')
 })

@@ -24,7 +24,7 @@ document.getElementById('register').addEventListener('click',async()=>{
         return;
     }
     try {
-        const response = await axios.post('http://localhost:3001/register', {
+        const response = await axios.post('http://34.81.200.131:3000/api/register', {
             username,
             password
         })
@@ -44,15 +44,18 @@ document.getElementById('user-login').addEventListener('click', async ()=>{
     const password = document.getElementById('password').value
     console.log(username, password)
     try {
-        const response = await axios.post('/login',{
+        const response = await axios.post('http://34.81.200.131:3000/api/authController',{
             username,
             password
         })
+        if(response.data === '用戶名或密碼錯誤'){
+            return alert(response.data)
+        }
         // 登入成功
-        document.cookie = `token=${response.data}; max-age=3600; path=/`
+        document.cookie = `token=${response.data}; max-age=1000; path=/`
         alert('登入成功')
         // 畫面跳轉
-        window.location.href = '/memberPage'
+        window.location.href = '/logout'
 
     } catch (err) {
         // 登入失敗

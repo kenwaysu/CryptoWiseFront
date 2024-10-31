@@ -1,4 +1,9 @@
 // 整理接收的數據
+const token = document.cookie
+    .split('; ')
+    .find(row => row.startsWith('token='))
+    ?.split('=')[1] || ''
+// 從 cookie 中獲取 token
 document.getElementById('MAsearch').addEventListener('click',()=>{
     const tick = document.querySelector('#tick').value
     const ma1 = document.querySelector('#ma1').value
@@ -17,7 +22,7 @@ document.getElementById('MAsearch').addEventListener('click',()=>{
         alert('MA值僅支援1~500')
     }
     
-    axios.post('http://localhost:3001/search', data)
+    axios.post('http://34.81.200.131:3000/api/search', data)
     .then(response=>{
         console.log(response)
         const tradingPairs = response.data.message
@@ -66,8 +71,14 @@ document.getElementById('login').addEventListener('click',()=>{
 async function addCoin(event){
     const pair = event.currentTarget.id
     try {
-        const response = await axios.post('http://localhost:3001/userCoin', { pair }, {
-            withCredentials: true
+        console.log('addclick')
+        const response = await axios.post('http://34.81.200.131:3000/api/userCoin', { pair },
+        {
+            withCredentials: true,
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token}`
+            }
         })
         alert(response.data)
     } catch (error) {

@@ -1,4 +1,10 @@
-let ws = new WebSocket('ws://localhost:3001')
+// 前端建立 WebSocket 連接
+const token = document.cookie
+    .split('; ')
+    .find(row => row.startsWith('token='))
+    ?.split('=')[1] || '' // 從 cookie 中獲取 token
+// 將 token 加入到 headers 中
+let ws = new WebSocket(`ws://34.81.200.131:3000/?token=${token}`)
 let orderPairs = new Set()
 let portfolioPairs = new Set()
 let orderList = document.getElementById('orderList')
@@ -114,7 +120,14 @@ document.getElementById('historySearch').addEventListener('click',historySearch)
 async function typePrice(){
     const coin = document.querySelector('#cryptoSelect').value
     try{
-        const response = await axios.post('http://localhost:3001/trade/typePrice',{coin},{withCredentials: true})
+        const response = await axios.post('http://34.81.200.131:3000/api/trade/typePrice',{coin},
+        {   
+            withCredentials: true,
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token}`
+            }
+        })
         if(response.data === '無效的交易對或不支援的幣種'){
             return alert('交易對輸入錯誤')
         }
@@ -184,9 +197,14 @@ async function placeOrder(event){
         }
 
         try {
-            const response = await axios.post('http://localhost:3001/trade/placeOrder', 
+            const response = await axios.post('http://34.81.200.131:3000/api/trade/placeOrder', 
                 { order }, 
-                { withCredentials: true }
+                { withCredentials: true,
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${token}`
+                    }
+                }
             )
             if (response.status === 200) {
                 confirmModal.hide()
@@ -232,9 +250,14 @@ async function resetAsset(){
     
     if (confirmed) {
         try {
-            const response = await axios.post('http://localhost:3001/trade/resetAsset', 
+            const response = await axios.post('http://34.81.200.131:3000/api/trade/resetAsset', 
                 {}, 
-                { withCredentials: true }
+                { withCredentials: true,
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${token}`
+                    }
+                }
             )
             if (response.status === 201) {
                 resetModal.hide()
@@ -267,8 +290,12 @@ async function confirmResetAsset(){
 
 async function removeOrder(id){
     try {
-        const response = await axios.post('http://localhost:3001/trade/removeOrder', { id }, {
-            withCredentials: true
+        const response = await axios.post('http://34.81.200.131:3000/api/trade/removeOrder', { id }, {
+            withCredentials: true,
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token}`
+            }
         })
         alert(response.data)
     } catch (error) {
@@ -293,11 +320,15 @@ async function historySearch() {
     endDate.setDate(endDate.getDate() + 1) // 將日期加一天
     try {
         // 發送日期區間查詢請求給後端
-        const response = await axios.post('http://localhost:3001/trade/historySearch', {
+        const response = await axios.post('http://34.81.200.131:3000/api/trade/historySearch', {
             startDate,
             endDate
         }, {
-            withCredentials: true
+            withCredentials: true,
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token}`
+            }
         });
 
         // 假設後端回傳的資料是類似 [{id, coin, order_type, trade_volume, trade_price, trade_value, timestamp}] 的格式
@@ -541,7 +572,13 @@ async function offsetPortfolio(coin, total_volume, current_value){
         order_value:current_value,
     }
     try {
-        const response = await axios.post('http://localhost:3001/trade/placeOrder',{order},{withCredentials: true})
+        const response = await axios.post('http://34.81.200.131:3000/api/trade/placeOrder',{order},
+        {withCredentials: true,
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token}`
+            }
+        })
         if(response.status === 200){
             return alert(response.data)
         }
