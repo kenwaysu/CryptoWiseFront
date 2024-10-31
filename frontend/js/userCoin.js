@@ -14,6 +14,12 @@ function init() {
     document.addEventListener('DOMContentLoaded', () => {
         addButton.addEventListener('click', addCryptoPair)
     })
+    ws.onopen = () => {
+        const message = {
+            action: 'subscribeUserCoins'
+        }
+        ws.send(JSON.stringify(message))
+    }
 
     ws.onmessage = handleWebSocketMessage
 }
@@ -21,16 +27,18 @@ function init() {
 function handleWebSocketMessage(event) {
     const coinListArray = JSON.parse(event.data)
     console.log(coinListArray)
-    coinListArray.forEach(coinData => {
-        const {coin, price, price_change, change_rate, trading_volume, volume_24hr} = coinData
+    if (coinListArray.action === 'coinUpdates') {
+        coinListArray.data.forEach(coinData => {
+            const {coin, price, price_change, change_rate, trading_volume, volume_24hr} = coinData
 
-        if (cryptoPairs.has(coin)) {
-            updateRow(coin, price, price_change, change_rate, trading_volume, volume_24hr)
-        } else {
-            createRow(coin, price, price_change, change_rate, trading_volume, volume_24hr)
-            cryptoPairs.add(coin)
-        }
-    })
+            if (cryptoPairs.has(coin)) {
+                updateRow(coin, price, price_change, change_rate, trading_volume, volume_24hr)
+            } else {
+                createRow(coin, price, price_change, change_rate, trading_volume, volume_24hr)
+                cryptoPairs.add(coin)
+            }
+        })
+    }
 }
 
 async function addCryptoPair() {
@@ -48,14 +56,15 @@ async function addCryptoPair() {
 
 function createRow(coin, price, price_change, change_rate, trading_volume, volume_24hr) {
     const row = document.createElement('tr')
+    const changeClass = price_change >= 0 ? 'text-bright-green' : 'text-bright-red'
 
     row.innerHTML = `
         <td>${coin}</td>
-        <td>${price}</td>
-        <td>${price_change}</td>
-        <td>${change_rate}%</td>
-        <td>${trading_volume}</td>
-        <td>${volume_24hr}</td>
+        <td class="${changeClass}">${price}</td>
+        <td class="${changeClass}">${price_change}</td>
+        <td class="${changeClass}">${change_rate}</td>
+        <td class="${changeClass}">${trading_volume}</td>
+        <td class="${changeClass}">${volume_24hr}</td>
         <td><button class="remove-btn btn btn-danger">移除</button></td>
     `
 
@@ -75,9 +84,18 @@ function updateRow(coin, price, price_change, change_rate, trading_volume, volum
         if (row.cells[0].textContent === coin) {
             row.cells[1].textContent = price
             row.cells[2].textContent = price_change
-            row.cells[3].textContent = `${change_rate}%`
-            row.cells[4].textContent = trading_volume
+            row.cells[3].textContent = `${change_rate}`
+            row.cells[4].textContent = trading_volume 
             row.cells[5].textContent = volume_24hr
+
+            // 根據 price_change 更新顏色
+            const changeClass = price_change >= 0 ? 'text-bright-green' : 'text-bright-red'
+            const cellsToUpdate = [row.cells[1], row.cells[2], row.cells[3], row.cells[4], row.cells[5]]
+
+            cellsToUpdate.forEach(cell => {
+                cell.classList.remove('text-bright-green', 'text-bright-red')
+                cell.classList.add(changeClass)
+            })
             break
         }
     }
